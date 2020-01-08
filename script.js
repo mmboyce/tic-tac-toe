@@ -1,6 +1,7 @@
 const body = document.querySelector("body")
 const table = document.createElement("table")
 const status = document.createElement("p")
+const restartButton = document.createElement("input")
 
 const fillTable = () => {
     let pos = 0
@@ -20,7 +21,15 @@ const fillTable = () => {
         table.appendChild(row)
     }
 
+    status.innerText = "O's turn!"
+
+    restartButton.type = "button"
+    restartButton.value = "Restart"
+    restartButton.addEventListener("click", gameBoard.restart)
+
     body.appendChild(table)
+    body.appendChild(status)
+    body.appendChild(restartButton)
 }
 
 const gameBoard = (function () {
@@ -151,7 +160,7 @@ const gameBoard = (function () {
 
         let gameStatus = _checkWin()
 
-        switch(gameStatus){
+        switch (gameStatus) {
             case X:
                 status.innerText = "X won"
                 break;
@@ -166,10 +175,31 @@ const gameBoard = (function () {
         }
     }
 
-    return { placePiece }
+    const restart = () => {
+        for (let i = 0; i < _gameBoard.length; i++) {
+            _gameBoard[i] = ""
+        }
+
+        let data = document.querySelectorAll("td")
+
+        for(let i = 0; i < data.length; i++){
+            data[i].innerText = ""
+        }
+
+        if(!_gameOver){
+            _playerXTurn = !_playerXTurn
+        }
+
+        const currentTurn = _playerXTurn ? "X's turn" : "O's turn"
+
+        _gameOver = false
+
+        status.innerText = currentTurn
+    }
+
+    return { placePiece, restart }
 
 })()
 
 
 fillTable()
-body.appendChild(status)
