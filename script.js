@@ -1,7 +1,8 @@
-const body = document.querySelector("body")
+const container = document.querySelector("#container")
 const table = document.createElement("table")
 const status = document.createElement("p")
 const restartButton = document.createElement("input")
+const credit = document.querySelector("#credit")
 
 const fillTable = () => {
     let pos = 0
@@ -22,14 +23,17 @@ const fillTable = () => {
     }
 
     status.innerText = "O's turn!"
+    status.id = "status"
 
     restartButton.type = "button"
     restartButton.value = "Restart"
     restartButton.addEventListener("click", gameBoard.restart)
+    restartButton.id = "restart"
 
-    body.appendChild(table)
-    body.appendChild(status)
-    body.appendChild(restartButton)
+    container.appendChild(table)
+    container.appendChild(status)
+    container.appendChild(restartButton)
+    container.appendChild(credit)
 }
 
 const gameBoard = (function () {
@@ -148,11 +152,15 @@ const gameBoard = (function () {
         if (_playerXTurn) {
             _gameBoard[pos] = X
             square.innerText = X
+            
+            square.id = "x"
             status.innerText = "O's turn!"
         }
         else {
             _gameBoard[pos] = O
             square.innerText = O
+
+            square.id = "o"
             status.innerText = "X's turn!"
         }
 
@@ -182,11 +190,12 @@ const gameBoard = (function () {
 
         let data = document.querySelectorAll("td")
 
-        for(let i = 0; i < data.length; i++){
+        for (let i = 0; i < data.length; i++) {
             data[i].innerText = ""
+            data[i].id = ""
         }
 
-        if(!_gameOver){
+        if (!_gameOver) {
             _playerXTurn = !_playerXTurn
         }
 
@@ -200,6 +209,5 @@ const gameBoard = (function () {
     return { placePiece, restart }
 
 })()
-
 
 fillTable()
